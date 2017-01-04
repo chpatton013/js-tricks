@@ -1,0 +1,140 @@
+<html>
+   <!--
+    - All of the styling for this toggle behavior revolves around adding and
+    _ removing the toggle class from the parent element. In this example, we use
+    _ the toggle class "read_more" on the element "div.read_more_container".
+    _ This causes - the elements "button.show_more" and "div.more_text" to
+    _ toggle accordingly.
+     
+    - All of these selectors and classes can be replaced with whatever you want
+    - to use. You can even do this with multiple elements all over the page.
+    - If you have multiple uses of this, make sure that you either use different
+    - parent elements or different toggle class names.
+    -->
+
+   <head>
+      <!-- Pull in jQuery for this example. jQuery is automatically provided by
+      both Enfold and WordPress, so this is definitely not necessary for your
+      normal use case. -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script type="text/javascript">
+         //<![CDATA[
+
+         /**
+          * It is important to make sure that any JS code that is run in a
+          * browser is wrapped in a function so it does not trample symbols in
+          * global scope. Don't forget to execute the function immediately,
+          * though:
+          *    (function() { ... })();
+          */
+         (function() {
+            /**
+             * Waiting until DOM-ready guarantees that all the elements you
+             * expect to be on the page have been rendered and can be selected
+             * in javascript. Trying to select an element before it has rendered
+             * will result in the selector providing you with null instead of
+             * the element, which will prevent your code from running.
+             */
+            jQuery(document).ready(function() {
+               /**
+                * This is the function that makes all the magic happen. Call it
+                * with the correct parameters, and it will setup class toggling
+                * on-click. addClassToggle takes three parameters:
+                *
+                * 1. container
+                *    The parent/containing element. This is usually a div, but
+                *    could go so far as the body. It is important that this
+                *    container element be a parent to both the "Show More"
+                *    button AND the "More Text" text element.
+                * 2. clicker
+                *    The click element. This is usually a button or anchor,
+                *    though anything would work. When this element is clicked,
+                *    the toggle class is added or removed from the container
+                *    element.
+                * 3. className
+                *    The toggle class name. This class is added or removed from
+                *    from the container element when the click element is
+                *    engaged.
+                */
+               function addClassToggle(container, clicker, className) {
+                  jQuery(clicker).click(function() {
+                     jQuery(container).toggleClass(className);
+                  });
+               }
+
+               /**
+                * Populate this list of unique CSS selectors for the parent
+                * containers you want to target. This example uses two separate
+                * ids, but classes will work fine as long as they refer to
+                * single, unique elements.
+                */
+               var containers = ['#container1', '#container2'];
+
+               /**
+                * Replace these selectors only if you want different ones.
+                * Remember to update the HTML and CSS that uses these classes as
+                * well.
+                */
+               var showMoreChildSelector = '.show_more';
+               var showLessChildSelector = '.show_less';
+
+               /**
+                * Replace this class name only if you want to use a different
+                * one. Remember to update the HTML and CSS that uses these
+                * classes as well.
+                */
+               var toggleClass = 'read_more';
+
+               for (var index in containers) {
+                  var container = containers[index];
+                  var showMoreFullSelector = container + ' ' + showMoreChildSelector;
+                  var showLessFullSelector = container + ' ' + showLessChildSelector;
+                  addClassToggle(container, showMoreFullSelector, toggleClass);
+                  addClassToggle(container, showLessFullSelector, toggleClass);
+               }
+            });
+         })();
+
+         //]]>
+      </script>
+      <style type="text/css">
+         /**
+          * This is the default mode for the page. The container does not have
+          * the toggle class, so the "More Text" element should not be visible.
+          * The "Show More" element is visible because the following rule does
+          * not apply.
+          */
+         .read_more_container:not(.read_more) .more_text {
+            display: none;
+         }
+
+         /**
+          * This is the expanded mode for the page. The container does have the
+          * toggle class, so the "Show More" element should not be visible.
+          * The "More Text" element is visible because the previous rule does
+          * not apply.
+          */
+         .read_more_container.read_more .show_more {
+            display: none;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="container1" class="read_more_container">
+         <p>TEXT TEXT TEXT TEXT!</p>
+         <button class="show_more">Show More</button>
+         <div class="more_text">
+            <p>MORE MORE MORE MORE!</p>
+            <button class="show_less">Show Less</button>
+         </div>
+      </div>
+      <div id="container2" class="read_more_container">
+         <p>TEXT TEXT TEXT TEXT!</p>
+         <button class="show_more">Show More</button>
+         <div class="more_text">
+            <p>MORE MORE MORE MORE!</p>
+            <button class="show_less">Show Less</button>
+         </div>
+      </div>
+   </body>
+</html>
